@@ -1,5 +1,7 @@
-﻿using Blazor.PowerPoint.AddIn.Client.Pages;
+﻿/* Copyright(c) Maarten van Stam All rights reserved. */
 using Blazor.PowerPoint.AddIn.Components;
+
+using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddFluentUIComponents();
 
 var app = builder.Build();
 
@@ -23,7 +27,6 @@ else
 }
 
 app.UseHttpsRedirection();
-
 
 app.UseAntiforgery();
 

@@ -1,23 +1,43 @@
-﻿@inherits LayoutComponentBase
+﻿@* Copyright (c) Maarten van Stam All rights reserved. *@
 
-<div class="page">
-    <div class="sidebar">
+@inherits LayoutComponentBase
+
+<FluentLayout>
+    <FluentHeader>
+        Blazor PowerPoint Add-in
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
         <NavMenu />
-    </div>
+        <FluentBodyContent Class="body-content">
+            <div class="content">
+                @Body
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+    <FluentFooter>
+        <FluentStack Orientation="Orientation.Vertical"
+                     HorizontalAlignment="HorizontalAlignment.Center"
+                     VerticalAlignment="VerticalAlignment.Center">
+            <div>
+                @TrademarkMessage1
+            </div>
+            <div>
+                @TrademarkMessage2
+            </div>
+            <div>
+                Powered by: @FrameworkDescription
+            </div>
+        </FluentStack>
+    </FluentFooter>
+</FluentLayout>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+<div id="blazor-error-ui">
+    <FluentCard>
+        <FluentLabel>An unhandled error has occurred.</FluentLabel>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </FluentCard>
 </div>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>
+<FluentTooltipProvider />
+<FluentDialogProvider />

@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "name": "blazor.powerpoint.addin.client",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/office-js": "^1.0.462"
+  }
+}
