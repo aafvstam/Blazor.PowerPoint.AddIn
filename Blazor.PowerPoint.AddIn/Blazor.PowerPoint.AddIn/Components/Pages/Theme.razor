@@ -1,0 +1,14 @@
+﻿@* Copyright (c) Maarten van Stam All rights reserved. *@
+
+@page "/theme"
+@rendermode InteractiveServer
+
+@using Blazor.PowerPoint.AddIn.Components.Layout
+
+<PageTitle>Theme</PageTitle>
+
+<FluentStack Orientation="Orientation.Vertical" >
+    <FluentLabel Typo="Typography.H1">Theme</FluentLabel>
+    <FluentLabel>Select your theme.</FluentLabel>
+    <ThemeSelector />
+</FluentStack>
