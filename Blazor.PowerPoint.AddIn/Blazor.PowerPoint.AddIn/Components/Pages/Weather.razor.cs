@@ -1,5 +1,4 @@
-/* Copyright(c) Maarten van Stam All rights reserved. */
-
+/* Copyright(c) Maarten van Stam. All rights reserved. Licensed under the MIT License. */
 namespace Blazor.PowerPoint.AddIn.Components.Pages
 {
     public partial class Weather
