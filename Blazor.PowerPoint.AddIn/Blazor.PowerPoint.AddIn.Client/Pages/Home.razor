@@ -1,18 +1,20 @@
 ﻿﻿@* Copyright (c) Maarten van Stam. All rights reserved. Licensed under the MIT License. *@
 @page "/"
-@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@rendermode InteractiveWebAssembly
 
 <PageTitle>Home</PageTitle>
 
-<FluentStack Orientation="Orientation.Vertical"
-             HorizontalAlignment="HorizontalAlignment.Center"
-             VerticalAlignment="VerticalAlignment.Center">
-    <FluentStack Orientation=Orientation.Horizontal
+<LoadingProgress>
+    <FluentStack Orientation="Orientation.Vertical"
                  HorizontalAlignment="HorizontalAlignment.Center"
                  VerticalAlignment="VerticalAlignment.Center">
-        <FluentEmoji Value="@(new Emojis.TravelPlaces.Color.Default.Rocket())" />
-        <FluentLabel Typo="Typography.H1">Hello!</FluentLabel>
+        <FluentStack Orientation=Orientation.Horizontal
+                     HorizontalAlignment="HorizontalAlignment.Center"
+                     VerticalAlignment="VerticalAlignment.Center">
+            <FluentEmoji Value="@(new Emojis.TravelPlaces.Color.Default.Rocket())" />
+            <FluentLabel Typo="Typography.H1">Hello!</FluentLabel>
+        </FluentStack>
+        <FluentLabel>Welcome to your new PowerPoint Add-in.</FluentLabel>
+        <FluentButton OnClick="HelloButton" Appearance="Appearance.Accent">Say Hello World in PowerPoint!</FluentButton>
     </FluentStack>
-    <FluentLabel>Welcome to your new PowerPoint Add-in.</FluentLabel>
-    <FluentButton OnClick="HelloButton" Appearance="Appearance.Accent">Say Hello World in PowerPoint!</FluentButton>
-</FluentStack>
+</LoadingProgress>
