@@ -49,12 +49,17 @@ main {
 }
 
 @media (min-width: 641px) {
+    main {
+        display: flex;
+        align-content:start;
+    }
+
     .page {
         flex-direction: row;
     }
 
     .sidebar {
-        width: 250px;
+        width: 125px;
         height: 100vh;
         position: sticky;
         top: 0;

@@ -149,6 +149,7 @@ code {
 
     .navmenu {
         width: 100%;
+        max-width: 150px;
     }
 
     #navmenu-toggle {
@@ -161,6 +162,7 @@ code {
 
         #navmenu-toggle:checked ~ nav {
             display: block;
+            width: 150px;
         }
 
     .navmenu-icon {

@@ -2,19 +2,41 @@
 @inherits LayoutComponentBase
 
 <FluentLayout>
+
+    <!-- Header Area -->
     <FluentHeader>
         Blazor PowerPoint Add-in
     </FluentHeader>
-    <FluentStack Class="main" Orientation="Orientation.Vertical" Width="100%"
-                 HorizontalAlignment="HorizontalAlignment.Center"
-                 VerticalAlignment="VerticalAlignment.Center">
-        <NavMenu />
-        <FluentBodyContent Class="body-content">
-            <div class="content">
-                @Body
-            </div>
-        </FluentBodyContent>
+
+    <!-- Main Area -->
+    <FluentStack Class="main" Orientation="Orientation.Vertical" Width="100%">
+
+        <!-- Horizontal Area Full Filled -->
+        <FluentStack Orientation="Orientation.Horizontal"
+                     HorizontalAlignment="HorizontalAlignment.Stretch"
+                     VerticalAlignment="VerticalAlignment.Stretch"
+                     Style="flex-grow: 1;">
+
+            <!-- Menu Area Top Aligned -->
+            <FluentStack Orientation="Orientation.Vertical"
+                         VerticalAlignment="VerticalAlignment.Top"
+                         Width="auto">
+                <NavMenu />
+            </FluentStack>
+
+            <!-- Body Area Center Aligned -->
+            <FluentBodyContent Class="body-content"
+                               Style="display: flex; flex-grow: 1;">
+                <FluentStack Class="content"
+                             HorizontalAlignment="HorizontalAlignment.Center"
+                             VerticalAlignment="VerticalAlignment.Center">
+                    @Body
+                </FluentStack>
+            </FluentBodyContent>
+        </FluentStack>
     </FluentStack>
+
+    <!-- Footer Area -->
     <FluentFooter>
         <FluentStack Orientation="Orientation.Vertical"
                      HorizontalAlignment="HorizontalAlignment.Center"
