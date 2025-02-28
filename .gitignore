@@ -3,6 +3,9 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# Blazor TS Generated JS Files
+**/pages/*.js
+
 # dotenv files
 .env
 

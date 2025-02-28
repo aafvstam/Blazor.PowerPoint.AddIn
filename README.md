@@ -141,6 +141,10 @@ This sample is configured to support debugging both JavaScript and C# files. New
 | ------- | ------------------- | ------------------ |
 | 1.0     | XXXXXXXX XX, 2025   | Work In Progress   |
 
+## Extra Credits
+Additional contributions to this sample were made by [Rudy Cortembert](https://github.com/RudyCo/MyAspireBlazorAddIn).  
+Rudy adopted our earlier Blazor Add-in sample and helped to made it work with the new Blazor Hybrid model.
+
 ## Copyright
 
 Copyright(c) Maarten van Stam. All rights reserved.Licensed under the MIT License.

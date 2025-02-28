@@ -4,7 +4,9 @@
 
 <PageTitle>Counter</PageTitle>
 
-<FluentStack Orientation="Orientation.Vertical">
+<FluentStack Orientation="Orientation.Vertical"
+             HorizontalAlignment="HorizontalAlignment.Center"
+             VerticalAlignment="VerticalAlignment.Center">
     <FluentLabel Typo="Typography.H1">Counter</FluentLabel>
     <FluentLabel>Current count: <FluentBadge Appearance="Appearance.Neutral">@currentCount</FluentBadge></FluentLabel>
     <FluentButton Appearance="Appearance.Accent" @onclick="IncrementCount">Click me</FluentButton>
