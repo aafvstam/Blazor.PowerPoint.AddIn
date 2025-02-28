@@ -5,8 +5,28 @@ namespace Blazor.PowerPoint.AddIn.Components.Pages
     {
         private WeatherForecast[]? forecasts;
 
+        public bool IsLoading
+        {
+            get
+            {
+                return forecasts is null;
+            }
+        }
+
         protected override async Task OnInitializedAsync()
         {
+            await GetWeatherData();
+        }
+
+        private async Task RefreshButton()
+        {
+            await GetWeatherData();
+        }
+
+        private async Task GetWeatherData()
+        {
+            forecasts = null;
+
             // Simulate asynchronous loading to demonstrate streaming rendering
             await Task.Delay(500);
 
