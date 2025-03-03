@@ -9,7 +9,13 @@
 <FluentStack Orientation="Orientation.Vertical"
              HorizontalAlignment="HorizontalAlignment.Center"
              VerticalAlignment="VerticalAlignment.Center">
-    <FluentLabel Typo="Typography.H1">Theme</FluentLabel>
+    <FluentStack Orientation=Orientation.Horizontal
+                 HorizontalAlignment="HorizontalAlignment.Center"
+                 VerticalAlignment="VerticalAlignment.Center">
+        <FluentEmoji Value="@(new Emojis.Activities.Color.Default.ArtistPalette())" />
+        <FluentLabel Typo="Typography.H1">Theme</FluentLabel>
+    </FluentStack>
+
     <FluentLabel>Select your theme.</FluentLabel>
-        <ThemeSelector />
+    <ThemeSelector />
 </FluentStack>

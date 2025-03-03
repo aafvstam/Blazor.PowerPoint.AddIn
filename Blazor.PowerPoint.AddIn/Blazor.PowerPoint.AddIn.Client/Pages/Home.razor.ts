@@ -3,7 +3,7 @@
 /**
  * Basic function to show how to insert a value into a PowerPoint Presentation.
  */
-console.log("Loading Home.razor.js");
+console.log("Loading Home.razor.ts");
 
 export async function helloButton() {
 

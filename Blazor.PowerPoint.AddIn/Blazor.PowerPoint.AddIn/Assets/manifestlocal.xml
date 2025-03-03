@@ -129,12 +129,32 @@
 
 								<!-- Second Button Section -->
 
-								<Control xsi:type="Button" id="Contoso.FunctionButton1">
-									<Label resid="Contoso.FunctionButton1.Label" />
+								<Control xsi:type="Button" id="Contoso.FunctionButton0">
+									<Label resid="Contoso.FunctionButton0.Label" />
 									<Supertip>
 										<!-- ToolTip title. resid must point to a ShortString resource. -->
-										<Title resid="Contoso.FunctionButton1.Label" />
+										<Title resid="Contoso.FunctionButton0.Label" />
 										<!-- ToolTip description. resid must point to a LongString resource. -->
+										<Description resid="Contoso.FunctionButton0.Tooltip" />
+									</Supertip>
+									<Icon>
+										<bt:Image size="16" resid="Contoso.tpicon_16x16" />
+										<bt:Image size="32" resid="Contoso.tpicon_32x32" />
+										<bt:Image size="80" resid="Contoso.tpicon_80x80" />
+									</Icon>
+
+									<!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+									<Action xsi:type="ExecuteFunction">
+										<FunctionName>insertTextInPowerPoint</FunctionName>
+									</Action>
+								</Control>
+
+								<!--<Control xsi:type="Button" id="Contoso.FunctionButton1">
+									<Label resid="Contoso.FunctionButton1.Label" />
+									<Supertip>
+										--><!-- ToolTip title. resid must point to a ShortString resource. --><!--
+										<Title resid="Contoso.FunctionButton1.Label" />
+										--><!-- ToolTip description. resid must point to a LongString resource. --><!--
 										<Description resid="Contoso.FunctionButton1.Tooltip" />
 									</Supertip>
 									<Icon>
@@ -143,7 +163,7 @@
 										<bt:Image size="80" resid="Contoso.tpicon_80x80" />
 									</Icon>
 
-									<!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+									--><!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. --><!--
 									<Action xsi:type="ExecuteFunction">
 										<FunctionName>highlightSelectionIndex</FunctionName>
 									</Action>
@@ -152,9 +172,9 @@
 								<Control xsi:type="Button" id="Contoso.FunctionButton2">
 									<Label resid="Contoso.FunctionButton2.Label" />
 									<Supertip>
-										<!-- ToolTip title. resid must point to a ShortString resource. -->
+										--><!-- ToolTip title. resid must point to a ShortString resource. --><!--
 										<Title resid="Contoso.FunctionButton2.Label" />
-										<!-- ToolTip description. resid must point to a LongString resource. -->
+										--><!-- ToolTip description. resid must point to a LongString resource. --><!--
 										<Description resid="Contoso.FunctionButton2.Tooltip" />
 									</Supertip>
 									<Icon>
@@ -163,7 +183,7 @@
 										<bt:Image size="80" resid="Contoso.tpicon_80x80" />
 									</Icon>
 
-									<!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+									--><!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. --><!--
 									<Action xsi:type="ExecuteFunction">
 										<FunctionName>highlightSelectionBubble</FunctionName>
 									</Action>
@@ -172,9 +192,9 @@
 								<Control xsi:type="Button" id="Contoso.FunctionButton3">
 									<Label resid="Contoso.FunctionButton3.Label" />
 									<Supertip>
-										<!-- ToolTip title. resid must point to a ShortString resource. -->
+										--><!-- ToolTip title. resid must point to a ShortString resource. --><!--
 										<Title resid="Contoso.FunctionButton3.Label" />
-										<!-- ToolTip description. resid must point to a LongString resource. -->
+										--><!-- ToolTip description. resid must point to a LongString resource. --><!--
 										<Description resid="Contoso.FunctionButton3.Tooltip" />
 									</Supertip>
 									<Icon>
@@ -183,18 +203,18 @@
 										<bt:Image size="80" resid="Contoso.tpicon_80x80" />
 									</Icon>
 
-									<!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+									--><!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. --><!--
 									<Action xsi:type="ExecuteFunction">
 										<FunctionName>writeValue</FunctionName>
 									</Action>
-								</Control>
+								</Control>-->
 							</Group>
 
-							<Group id="Contoso.Group3">
-								<!-- Label for your group. resid must point to a ShortString resource. -->
+							<!--<Group id="Contoso.Group3">
+								--><!-- Label for your group. resid must point to a ShortString resource. --><!--
 								<Label resid="Contoso.Group3Label" />
-								<!-- Icons. Required sizes 16,32,80, optional 20, 24, 40, 48, 64. Strongly recommended to provide all sizes for great UX. -->
-								<!-- Use PNG icons. All URLs on the resources section must use HTTPS. -->
+								--><!-- Icons. Required sizes 16,32,80, optional 20, 24, 40, 48, 64. Strongly recommended to provide all sizes for great UX. --><!--
+								--><!-- Use PNG icons. All URLs on the resources section must use HTTPS. --><!--
 								<Icon>
 									<bt:Image size="16" resid="Contoso.tpicon_16x16" />
 									<bt:Image size="32" resid="Contoso.tpicon_32x32" />
@@ -204,9 +224,9 @@
 								<Control xsi:type="Button" id="Contoso.FunctionButton4">
 									<Label resid="Contoso.FunctionButton4.Label" />
 									<Supertip>
-										<!-- ToolTip title. resid must point to a ShortString resource. -->
+										--><!-- ToolTip title. resid must point to a ShortString resource. --><!--
 										<Title resid="Contoso.FunctionButton4.Label" />
-										<!-- ToolTip description. resid must point to a LongString resource. -->
+										--><!-- ToolTip description. resid must point to a LongString resource. --><!--
 										<Description resid="Contoso.FunctionButton4.Tooltip" />
 									</Supertip>
 									<Icon>
@@ -215,12 +235,12 @@
 										<bt:Image size="80" resid="Contoso.tpicon_80x80" />
 									</Icon>
 
-									<!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+									--><!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. --><!--
 									<Action xsi:type="ExecuteFunction">
 										<FunctionName>createBubbles</FunctionName>
 									</Action>
 								</Control>
-							</Group>
+							</Group>-->
 							<Label resid="Contoso.CustomTabLabel"/>
 						</CustomTab>
 					</ExtensionPoint>
@@ -248,6 +268,7 @@
 				<bt:String id="Contoso.Group2Label" DefaultValue="Texts" />
 				<bt:String id="Contoso.Group3Label" DefaultValue="Bubbles" />
 				<bt:String id="Contoso.TaskpaneButton.Label" DefaultValue="Show Task Pane" />
+				<bt:String id="Contoso.FunctionButton0.Label" DefaultValue="Action" />
 				<bt:String id="Contoso.FunctionButton1.Label" DefaultValue="Insert Name From Index" />
 				<bt:String id="Contoso.FunctionButton2.Label" DefaultValue="Insert Name From Bubble" />
 				<bt:String id="Contoso.FunctionButton3.Label" DefaultValue="Write JS" />
@@ -257,6 +278,7 @@
 			<!-- LongStrings max characters==250. -->
 			<bt:LongStrings>
 				<bt:String id="Contoso.TaskpaneButton.Tooltip" DefaultValue="Click to Show a Taskpane" />
+				<bt:String id="Contoso.FunctionButton0.Tooltip" DefaultValue="Click to perform action" />
 				<bt:String id="Contoso.FunctionButton1.Tooltip" DefaultValue="Click to insert text from Index Page" />
 				<bt:String id="Contoso.FunctionButton3.Tooltip" DefaultValue="Click to insert text from BubbleChart Page" />
 				<bt:String id="Contoso.FunctionButton2.Tooltip" DefaultValue="Click to insert text from commands.js" />
