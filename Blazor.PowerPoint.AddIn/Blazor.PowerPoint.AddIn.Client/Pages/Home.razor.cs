@@ -1,4 +1,6 @@
 /* Copyright(c) Maarten van Stam. All rights reserved. Licensed under the MIT License. */
+using Blazor.PowerPoint.AddIn.Client.Model;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -9,6 +11,8 @@ namespace Blazor.PowerPoint.AddIn.Client.Pages;
 
 public partial class Home : ComponentBase
 {
+    private HostInformation hostInformation = new HostInformation();
+
     [Inject, AllowNull]
     private IJSRuntime JSRuntime { get; set; }
     private IJSObjectReference JSModule { get; set; } = default!;
@@ -17,9 +21,16 @@ public partial class Home : ComponentBase
     {
         if (firstRender)
         {
+            hostInformation = await JSRuntime.InvokeAsync<HostInformation>("Office.onReady");
+
             Debug.WriteLine("Hit OnAfterRenderAsync in Home.razor.cs!");
             Console.WriteLine("Hit OnAfterRenderAsync in Home.razor.cs in Console!");
             JSModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Pages/Home.razor.js");
+
+            if (hostInformation.IsInitialized)
+            {
+                StateHasChanged();
+            }
         }
     }
 
@@ -28,10 +39,4 @@ public partial class Home : ComponentBase
     /// </summary>
     private async Task HelloButton() =>
         await JSModule.InvokeVoidAsync("helloButton");
-
-    [JSInvokable]
-    public static string SayHelloHome(string name)
-    {
-        return $"Hello Index, {name} from Home!";
-    }
 }

@@ -18,7 +18,7 @@ body {
 }
 
 .main {
-    min-height: calc(100dvh - 145px);
+    min-height: calc(100dvh - 160px);
     color: var(--neutral-foreground-rest);
     align-items: stretch !important;
 }

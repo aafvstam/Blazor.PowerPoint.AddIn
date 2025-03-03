@@ -8,12 +8,18 @@
 
 <FluentStack Orientation="Orientation.Vertical">
 
-    <FluentLabel Typo="Typography.H1">Weather</FluentLabel>
-    <FluentLabel Typo="Typography.Body">This component demonstrates showing data.</FluentLabel>
+    <FluentStack Orientation=Orientation.Horizontal
+                 HorizontalAlignment="HorizontalAlignment.Center"
+                 VerticalAlignment="VerticalAlignment.Center">
+        <FluentEmoji Value="@(new Emojis.TravelPlaces.Color.Default.SunWithFace())" />
+        <FluentLabel Typo="Typography.H1">Weather</FluentLabel>
+    </FluentStack>
 
-    <FluentToolbar style="width:100%">
-        <FluentButton OnClick="RefreshButton" Disabled=@IsLoading Appearance="Appearance.Stealth">Refresh</FluentButton>
-    </FluentToolbar>
+    <FluentStack Orientation=Orientation.Horizontal
+                 HorizontalAlignment="HorizontalAlignment.Center"
+                 VerticalAlignment="VerticalAlignment.Center">
+        <FluentLabel Typo="Typography.Body">This component demonstrates showing data.</FluentLabel>
+    </FluentStack>
 
     <FluentDataGrid Id="weathergrid"
                     Items="@forecasts?.AsQueryable()"
@@ -26,4 +32,12 @@
         <PropertyColumn Title="Temp. (F)" Property="@(c => c!.TemperatureF)" Sortable="true" Align="Align.Center" />
         <PropertyColumn Title="Summary" Property="@(c => c!.Summary)" Sortable="true" Align="Align.End" />
     </FluentDataGrid>
+
+    <FluentToolbar style="width:100%">
+        <FluentStack Orientation=Orientation.Horizontal
+                     HorizontalAlignment="HorizontalAlignment.Center"
+                     VerticalAlignment="VerticalAlignment.Center">
+            <FluentButton OnClick="RefreshButton" Disabled=@IsLoading Appearance="Appearance.Stealth">Refresh</FluentButton>
+        </FluentStack>
+    </FluentToolbar>
 </FluentStack>

@@ -41,15 +41,9 @@
         <FluentStack Orientation="Orientation.Vertical"
                      HorizontalAlignment="HorizontalAlignment.Center"
                      VerticalAlignment="VerticalAlignment.Center">
-            <div>
-                @TrademarkMessage1
-            </div>
-            <div>
-                @TrademarkMessage2
-            </div>
-            <div>
-                Powered by: @FrameworkDescription
-            </div>
+            <FluentLabel Typo="Typography.H5" Style="color: var(--fill-color)">@TrademarkMessage1</FluentLabel>
+            <FluentLabel Typo="Typography.H6" Style="color: var(--fill-color)">@TrademarkMessage2</FluentLabel>
+            <FluentLabel Typo="Typography.H6" Style="color: var(--fill-color)">Powered by: @FrameworkDescription</FluentLabel>
         </FluentStack>
     </FluentFooter>
 </FluentLayout>
