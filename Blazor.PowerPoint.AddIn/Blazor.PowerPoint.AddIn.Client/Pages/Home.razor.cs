@@ -39,4 +39,10 @@ public partial class Home : ComponentBase
     /// </summary>
     private async Task HelloButton() =>
         await JSModule.InvokeVoidAsync("helloButton");
+
+    /// <summary>
+    /// Basic function to invoke inserting `Hello world!` text.
+    /// </summary>
+    private async Task CreateSlide() =>
+        await JSModule.InvokeVoidAsync("createSlide");
 }
