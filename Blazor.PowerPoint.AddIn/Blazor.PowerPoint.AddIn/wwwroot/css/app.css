@@ -18,7 +18,7 @@ body {
 }
 
 .main {
-    min-height: calc(100dvh - 160px);
+    min-height: calc(100dvh - 155px);
     color: var(--neutral-foreground-rest);
     align-items: stretch !important;
 }
@@ -40,7 +40,7 @@ footer {
     background-color: var(--accent-fill-rest);
     align-items: center;
     padding: 10px 10px;
-    border: 3px dotted;
+    /*border: 3px dotted;*/
 }
 
     footer a {
