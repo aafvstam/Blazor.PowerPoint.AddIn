@@ -30,4 +30,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="npm install" />
+  </Target>
+
 </Project>

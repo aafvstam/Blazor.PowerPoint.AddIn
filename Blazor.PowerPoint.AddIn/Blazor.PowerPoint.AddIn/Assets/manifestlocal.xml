@@ -397,10 +397,10 @@
 				<bt:String id="Contoso.Taskpane.Theme.Label" DefaultValue="Theme" />
 				
 				<bt:String id="Contoso.FunctionButton0.Label" DefaultValue="Insert Text" />
-				<bt:String id="Contoso.FunctionButton1.Label" DefaultValue="Something" />
-				<bt:String id="Contoso.FunctionButton2.Label" DefaultValue="Something" />
-				<bt:String id="Contoso.FunctionButton3.Label" DefaultValue="Something" />
-				<bt:String id="Contoso.FunctionButton4.Label" DefaultValue="Something" />
+				<bt:String id="Contoso.FunctionButton1.Label" DefaultValue="To Do" />
+				<bt:String id="Contoso.FunctionButton2.Label" DefaultValue="To Do" />
+				<bt:String id="Contoso.FunctionButton3.Label" DefaultValue="To Do" />
+				<bt:String id="Contoso.FunctionButton4.Label" DefaultValue="To Do" />
 			</bt:ShortStrings>
 
 			<!-- LongStrings max characters==250. -->
