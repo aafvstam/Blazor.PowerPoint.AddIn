@@ -21,4 +21,12 @@
 	  <Folder Include="Assets\" />
 	</ItemGroup>
 
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="npm install" />
+	</Target>
+	
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="npm run start-local" />
+	</Target>
+
 </Project>

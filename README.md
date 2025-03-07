@@ -39,38 +39,45 @@ This sample shows how to build a PowerPoint add-in using .NET Blazor Hybrid tech
 
 1. Download or clone the [Office Add-ins samples repository](https://github.com/OfficeDev/Office-Add-in-samples).
 1. Open Visual Studio 2022 and open the: **Office-Add-in-samples\Samples\blazor-add-in\Blazor.PowerPoint.AddIn\Blazor.PowerPoint.AddIn.sln** solution.
-1. Choose **Debug** > **Start Debugging**. Or press <kbd>F5</kbd> to start the solution.
-1. Using the Terminal to sideload the Add-in and start PowerPoint using the command **npm run start-local**
+1. Choose **Debug** > **Start Debugging**. Or press <kbd>F5</kbd> to start the solution and sideload the Add-in and start PowerPoint.
+1. [Optionally] You can use the Terminal to sideload the Add-in and start PowerPoint using the command **npm run start-local** separately
 1. When PowerPoint opens, choose **Sample Add-in** > **Show task pane** (if not already open).
 1. Try out the controls on the task panes.
 1. Try out the custom buttons on the **Sample Add-in** tab on the ribbon.
 
 ## Understand an Office Add-in in a Hybrid Blazor Context
-##### TODO - Add more content here
-An Office Add-in is a web application that extends Office with additional functionality for the user. For example, an add-in can add ribbon buttons, a task pane, or a content pane with the functionality you want. Because an Office Add-in is a web application, you must provide a web server to host the files.
-Building the Office Add-in as a Blazor Webassembly allows you to build a .NET Core compliant website that interacts with the Office JS APIs. If your background is with VBA, VSTO, or COM add-in development, you may find that building Office Add-ins using Blazor Webassembly is a familiar development technique.
+An Office Add-in is a web application that extends Office with additional functionality for the user. For example, an add-in can add ribbon buttons, a task pane, or a content pane with the functionality you want. Because an Office Add-in is a web application, you must provide a web server to host the files.  
+
+Building the Office Add-in as a Hybrid Blazor Application it allows you to build a .NET Core compliant website that interacts with the Office JS APIs using WebAssembly. If your background is with VBA, VSTO, or COM add-in development, you may find that building Office Add-ins using Hybrid Blazor is a familiar development technique.  
+
+By using Hybrid Blazor, you can select which parts of your add-in you want to build in C# and which parts you want to build in JavaScript. This allows you to leverage the strengths of both languages and build a more robust add-in that can run parts that need a higher security level at the server and only bring the parts that interact with Office to the client.  
+
+This sample also implemented the Blazor Fluent UI components to show how you can use the Fluent UI components in your add-in. The Blazor Fluent UI components are a set of UI components that implement the Fluent Design System. The Fluent UI components contains options to easily implement Themes to your Add-in. To switch between themes select the Theme option in the Ribbon, or the Theme option in the task pane menu.   
+
+This sample also implemented TypeScript as a language to interact with the Office JS API. TypeScript is a superset of JavaScript that compiles to plain JavaScript. TypeScript is designed for the development of large applications and can be used to develop Office Add-ins. TypeScript is a language that is easy to learn and can be used to build Office Add-ins that interact with the Office JS API. TypeScript allows you to develop strong typed code that can detect compile issues before the code is deployed where often JavaScript issues only are discovered at runtime in production.  
 
 ## Key parts of this sample
-##### TODO - Add more content here
-This sample uses a Blazor Webassembly file that runs cross-platform in various browsers supporting WASM (Webassembly). The Blazor WASM App demonstrates some basic PowerPoint functions using paragraphs and content controls including event handlers.
+This sample runs a Hybrid Blazor Application that  runs cross-platform in various browsers supporting WASM (Webassembly). The part that is using WebAssembly demonstrates some basic PowerPoint functions using slides and shapes to build a presentation.
 
 The purpose of this sample is to show you how to build and interact with the Blazor, C# and JavaScript Interop options. If you're looking for more examples of interacting with PowerPoint and Office JS APIs, see [Script Lab](https://aka.ms/getscriptlab).
 
 ### Blazor pages
-##### TODO - Add more content here
-The **Pages** folder contains the Blazor pages, such as **HelloWorld.razor**. Each **.razor** page also contain two code-behind pages, for example, named **HelloWorld.razor.cs** and **HelloWorld.razor.js**. The C# file first establishes an interop connection with the JavaScript file.
+The **Pages** folder contains the Blazor pages, and is based on the generic Blazor demo application provided in Visual Studio. It contains similar pages such as Home, Counter and Weather. The Home page is implemented as **Home.razor**. As pages can run both on the Server side or the Client side they can be defined in either the Add-in project or the Client project.  
+
+Each **.razor** page can contain code-behind pages, for example, named **Home.razor.cs** and **Home.razor.ts**. The C# file first establishes an interop connection with the JavaScript file (generated by TypeScript).
 
 ```csharp
 protected override async Task OnAfterRenderAsync(bool firstRender)
 {
   if (firstRender)
   {
-    JSModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Pages/HelloWorld.razor.js");
+    JSModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Pages/Home.razor.js");
   }
 }
 ```
 
-For any events that need to interact with the Office document, the C# file calls through interop to the JavaScript file.
+##### TODO - Implement TypeScript Interop Functions
+For any events that need to interact with the Office document, the C# file calls through interop to the JavaScript (generated by TypeScript) file.
 
 ```csharp
 private async Task InsertParagraph() =>
@@ -101,7 +108,6 @@ The fundamental pattern includes the following steps.
 1. Call Office JS APIs to interact with the document from JavaScript code.
 
 ### Blazor interop with Add-in Commands
-##### TODO - Add more content here
 This sample shows how to use Blazor with custom buttons on the ribbon. The buttons call the same functions that are defined on the task pane. This sample is configured to use the shared runtime which is required for this interop to work correctly.
 
 ## Debugging
@@ -111,13 +117,13 @@ This sample is configured to support debugging both JavaScript and C# files. New
 1. In the **launchSettings.json** file of the web project, make sure all instances of `launchBrowser` are set to `false`.
 1. In the **<projectName>.csproj.user** file of the add-in project, add the `<BlazorAppUrl>` and `<InspectUri>` elements as shown in the following example XML.
 
-**Note:** The port number in the following XML is 7126. You must change it to the port number specified in the **launchSettings.json** file for your web project.
+**Note:** The port number in the following XML is 7214. You must change it to the port number specified in the **launchSettings.json** file for your web project.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <BlazorAppUrl>https://localhost:7126/</BlazorAppUrl>
+    <BlazorAppUrl>https://localhost:7214/</BlazorAppUrl>
     <InspectUri>{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}</InspectUri>
   </PropertyGroup>
 </Project>
