@@ -15,15 +15,15 @@
     "dev_server_port": 7214
   },
   "scripts": {
-    "start": "office-addin-debugging start ..\\Blazor.PowerPoint.AddIn\\Assets\\manifest.powerpoint.xml",
-    "start-local": "office-addin-debugging start ..\\Blazor.PowerPoint.AddIn\\Assets\\manifestlocal.xml",
+    "start-production": "office-addin-debugging start ..\\Blazor.PowerPoint.AddIn\\Assets\\manifest.production.xml",
+    "start-local": "office-addin-debugging start ..\\Blazor.PowerPoint.AddIn\\Assets\\manifest.local.xml",
     "stop": "office-addin-debugging stop manifest.xml",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "validate": "office-addin-manifest validate ..\\Blazor.PowerPoint.AddIn\\Assets\\manifest.powerpoint.xml",
-    "validate-local": "office-addin-manifest validate ..\\Blazor.PowerPoint.AddIn\\Assets\\manifestlocal.xml"
+    "validate-production": "office-addin-manifest validate ..\\Blazor.PowerPoint.AddIn\\Assets\\manifest.production.xml",
+    "validate-local": "office-addin-manifest validate ..\\Blazor.PowerPoint.AddIn\\Assets\\manifest.local.xml"
   },
   "devDependencies": {
-    "@types/office-js-preview": "^1.0.567",
+    "@types/office-js-preview": "1.0.571",
     "office-addin-debugging": "^6.0.3",
     "office-addin-manifest": "^2.0.3"
   }

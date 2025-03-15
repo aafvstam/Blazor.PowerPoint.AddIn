@@ -35,8 +35,15 @@ public partial class Home : ComponentBase
     }
 
     /// <summary>
-    /// Basic function to invoke inserting `Hello world!` text.
+    /// Function to create a new slide in the PowerPoint presentation.
     /// </summary>
     private async Task CreateSlide() =>
         await JSModule.InvokeVoidAsync("createSlide");
+
+
+    [JSInvokable]
+    public static Task<string> SayHello(string name)
+    {
+        return Task.FromResult($"Hello Home, {name} from Home Page!");
+    }
 }

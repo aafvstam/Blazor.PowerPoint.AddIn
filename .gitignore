@@ -5,6 +5,7 @@
 
 # Blazor TS Generated JS Files
 **/pages/*.js
+**/wwwroot/*.module.js
 
 # dotenv files
 .env
