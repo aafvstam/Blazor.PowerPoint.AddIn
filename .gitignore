@@ -5,7 +5,7 @@
 
 # Blazor TS Generated JS Files
 **/pages/*.js
-**/*.module.js
+**/wwwroot/*.module.js
 
 # dotenv files
 .env
@@ -486,4 +486,3 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
-/Blazor.PowerPoint.AddIn/Blazor.PowerPoint.AddIn.Client/wwwroot/Blazor.PowerPoint.Addin.Client.lib.module.js

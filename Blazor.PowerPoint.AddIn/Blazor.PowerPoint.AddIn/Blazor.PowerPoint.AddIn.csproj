@@ -12,13 +12,9 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Blazor.PowerPoint.AddIn.Client\Blazor.PowerPoint.AddIn.Client.csproj" />
 		
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.2" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.5" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.5" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Assets\" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.3" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.6" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.6" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
