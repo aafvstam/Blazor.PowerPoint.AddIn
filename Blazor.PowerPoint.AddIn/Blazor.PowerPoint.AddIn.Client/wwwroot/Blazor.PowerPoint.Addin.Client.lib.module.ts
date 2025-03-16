@@ -33,18 +33,35 @@ console.log("Loading Blazor.PowerPoint.Addin.Client.lib.module.js");
  * @param  {} extensions
  */
 export async function beforeWebAssemblyStart(options: any, extensions: any) {
-	console.log("We are now entering function: beforeWebAssemblyStart");
+    console.log("We are now entering function: beforeWebAssemblyStart");
 
-	Office.onReady((info) => {
-		// Check that we loaded into PowerPoint.
-		if (info.host === Office.HostType.PowerPoint) {
-			console.log("We are now hosting in PowerPoint.");
-		}
-		else {
-			console.log("We are now hosting in The Browser (of your choice).");
-		}
-		console.log("Office onReady.");
-	});
+    Office.onReady((info) => {
+        // Check that we loaded into PowerPoint.
+        if (info.host === Office.HostType.PowerPoint) {
+
+            console.log("We are now hosting in PowerPoint.");
+
+            // Set the startup behavior of the add-in so that it loads whenever the PowerPoint document is loaded.
+            Office.addin.setStartupBehavior(Office.StartupBehavior.load);
+
+            // Register an event handler for the onChanged event.
+            Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, onChange);
+            console.log("A handler has been registered for the onChanged event.");
+        }
+        else {
+            console.log("We are now hosting in The Browser (of your choice).");
+        }
+        console.log("Office onReady.");
+    });
+}
+
+/**
+ * Handle the changed event from the PowerPoint document.
+ *
+ * @param event The event information from PowerPoint
+ */
+async function onChange(event: any) {
+    console.log("Change type of event: " + event.type);
 }
 
 /**
@@ -56,7 +73,7 @@ export async function beforeWebAssemblyStart(options: any, extensions: any) {
  * @param  {} options
  */
 export async function beforeWebStart(options: any) {
-	console.log("We are now entering function: beforeWebStart");
+    console.log("We are now entering function: beforeWebStart");
 }
 
 /**
@@ -67,8 +84,8 @@ export async function beforeWebStart(options: any) {
  * @param  {} options
  * @param  {} extensions
  */
-export async function beforeServerStart(options: any, extensions:any) {
-	console.log("We are now entering function: beforeServerStart");
+export async function beforeServerStart(options: any, extensions: any) {
+    console.log("We are now entering function: beforeServerStart");
 }
 
 /**
@@ -80,7 +97,7 @@ export async function beforeServerStart(options: any, extensions:any) {
  * @param  {} blazor
  */
 export async function afterWebStarted(blazor: any) {
-	console.log("We are now entering function: afterWebStarted");
+    console.log("We are now entering function: afterWebStarted");
 }
 
 /**
@@ -89,8 +106,8 @@ export async function afterWebStarted(blazor: any) {
  * Called after the first Interactive Server runtime is started.
  * @param  {} blazor
  */
-export async function afterServerStarted(blazor:any) {
-	console.log("We are now entering function: afterServerStarted");
+export async function afterServerStarted(blazor: any) {
+    console.log("We are now entering function: afterServerStarted");
 }
 
 /**
@@ -100,5 +117,5 @@ export async function afterServerStarted(blazor:any) {
  * @param  {} blazor
  */
 export async function afterWebAssemblyStarted(blazor: any) {
-	console.log("We are now entering function: afterWebAssemblyStarted");
+    console.log("We are now entering function: afterWebAssemblyStarted");
 }

@@ -42,8 +42,14 @@ public partial class Home : ComponentBase
 
 
     [JSInvokable]
-    public static Task<string> SayHello(string name)
+    public static Task<string> SayHelloHome(string name)
     {
         return Task.FromResult($"Hello Home, {name} from Home Page!");
+    }
+
+    [JSInvokable]
+    public static Task<string> PreloaderDummy()
+    {
+        return Task.FromResult("Loaded");
     }
 }
