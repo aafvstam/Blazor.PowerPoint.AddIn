@@ -1,5 +1,6 @@
 ﻿/* Copyright(c) Maarten van Stam. All rights reserved. Licensed under the MIT License. */
 using Blazor.PowerPoint.AddIn.Components;
+using Blazor.PowerPoint.AddIn.Client.Services;
 
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -11,6 +12,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddFluentUIComponents();
+builder.Services.AddScoped<ServerCommandHandler>();
 
 var app = builder.Build();
 
