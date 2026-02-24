@@ -272,7 +272,7 @@
 
 									<!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
 									<Action xsi:type="ExecuteFunction">
-										<FunctionName>callBlazorOnCounter</FunctionName>
+										<FunctionName>callBlazorServer</FunctionName>
 									</Action>
 								</Control>
 
@@ -292,7 +292,7 @@
 
 									<!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
 									<Action xsi:type="ExecuteFunction">
-										<FunctionName>callBlazorOnHome</FunctionName>
+										<FunctionName>callBlazorWasm</FunctionName>
 									</Action>
 								</Control>
 							</Group>
@@ -373,8 +373,8 @@
 				<bt:String id="Contoso.FunctionButton0.Label" DefaultValue="Insert Text" />
 				<bt:String id="Contoso.FunctionButton1.Label" DefaultValue="To Do" />
 				<bt:String id="Contoso.FunctionButton2.Label" DefaultValue="To Do" />
-				<bt:String id="Contoso.FunctionButton3.Label" DefaultValue="Insert Name from Counter" />
-				<bt:String id="Contoso.FunctionButton4.Label" DefaultValue="Insert Name from Home" />
+				<bt:String id="Contoso.FunctionButton3.Label" DefaultValue="Insert text from Server" />
+				<bt:String id="Contoso.FunctionButton4.Label" DefaultValue="Insert text from WASM" />
 			</bt:ShortStrings>
 
 			<!-- LongStrings max characters==250. -->
