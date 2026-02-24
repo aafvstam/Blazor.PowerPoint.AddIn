@@ -48,17 +48,17 @@ async function insertTextInPowerPoint(event) {
  * Uses the "wasm" DotNetObjectReference (ClientCommandHandler) via WasmBridge.
  * @param {any} event
  */
-async function callBlazorOnHome(event) {
+async function callBlazorWasm(event) {
     try {
-        console.log("Running callBlazorOnHome");
+        console.log("Running callBlazorWasm");
         await callDotNetMethod("wasm", "SayHelloHome");
     }
     catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        console.error("Error in callBlazorOnHome:", errorMessage);
+        console.error("Error in callBlazorWasm:", errorMessage);
     }
     finally {
-        console.log("Finish callBlazorOnHome");
+        console.log("Finish callBlazorWasm");
     }
     // Be sure to indicate when the add-in command function is complete
     if (event && typeof event.completed === 'function') {
@@ -70,17 +70,17 @@ async function callBlazorOnHome(event) {
  * Uses the "server" DotNetObjectReference (ServerCommandHandler) via ServerBridge.
  * @param {any} event
  */
-async function callBlazorOnCounter(event) {
+async function callBlazorServer(event) {
     try {
-        console.log("Running callBlazorOnCounter");
+        console.log("Running callBlazorServer");
         await callDotNetMethod("server", "SayHelloCounter");
     }
     catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        console.error("Error in callBlazorOnCounter:", errorMessage);
+        console.error("Error in callBlazorServer:", errorMessage);
     }
     finally {
-        console.log("Finish callBlazorOnCounter");
+        console.log("Finish callBlazorServer");
     }
     // Calling event.completed is required. event.completed lets the platform know that processing has completed.
     if (event && typeof event.completed === 'function') {
@@ -95,6 +95,7 @@ async function callBlazorOnCounter(event) {
  * @param {string} methodName - The name of the [JSInvokable] method to invoke on the handler.
  */
 async function callDotNetMethod(bridgeName, methodName) {
+    const t0 = performance.now();
     console.log(`In callDotNetMethod: bridge=${bridgeName}, method=${methodName}`);
     try {
         let name = "Initializing";
@@ -121,6 +122,7 @@ async function callDotNetMethod(bridgeName, methodName) {
             name = errorMessage;
             console.error("Error during DotNet invocation: " + name);
         }
+        console.log(`callDotNetMethod: .NET call took ${(performance.now() - t0).toFixed(1)}ms, starting PowerPoint.run`);
         await PowerPoint.run(async (context) => {
             const slide = context.presentation.getSelectedSlides().getItemAt(0);
             const textBox = slide.shapes.addTextBox(name, {
@@ -186,6 +188,6 @@ async function preloadDotNet(bridgeName, timeoutMs = 10000) {
 }
 // Associate the functions with their named counterparts in the manifest XML.
 Office.actions.associate("insertTextInPowerPoint", insertTextInPowerPoint);
-Office.actions.associate("callBlazorOnHome", callBlazorOnHome);
-Office.actions.associate("callBlazorOnCounter", callBlazorOnCounter);
+Office.actions.associate("callBlazorWasm", callBlazorWasm);
+Office.actions.associate("callBlazorServer", callBlazorServer);
 //# sourceMappingURL=commands.js.map
