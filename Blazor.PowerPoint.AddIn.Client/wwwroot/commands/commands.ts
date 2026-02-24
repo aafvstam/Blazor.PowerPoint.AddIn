@@ -50,25 +50,19 @@ async function insertTextInPowerPoint(event: Office.AddinCommands.Event): Promis
 }
 
 /**
- * Writes the text from the Home Blazor Page to the PowerPoint slide
+ * Writes the text from the Home Blazor Page to the PowerPoint slide.
+ * Uses the "wasm" DotNetObjectReference (ClientCommandHandler) via WasmBridge.
  * @param {any} event
  */
-async function callBlazorOnHome(event: Office.AddinCommands.Event) {
-
-  // Implement your custom code here. The following code is a simple PowerPoint example.  
+async function callBlazorWasm(event: Office.AddinCommands.Event) {
   try {
-
-    console.log("Running callBlazorOnHome");
-    await callStaticLocalComponentMethodinit("SayHelloHome");
-
+    console.log("Running callBlazorWasm");
+    await callDotNetMethod("wasm", "SayHelloHome");
   } catch (error) {
-
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error("Error in callBlazorOnHome:", errorMessage);
-
+    console.error("Error in callBlazorWasm:", errorMessage);
   } finally {
-
-    console.log("Finish callBlazorOnHome");
+    console.log("Finish callBlazorWasm");
   }
 
   // Be sure to indicate when the add-in command function is complete
@@ -78,23 +72,19 @@ async function callBlazorOnHome(event: Office.AddinCommands.Event) {
 }
 
 /**
- * Writes the text from the Counter Blazor Page to the PowerPoint slide
+ * Writes the text from the Counter Blazor Page to the PowerPoint slide.
+ * Uses the "server" DotNetObjectReference (ServerCommandHandler) via ServerBridge.
  * @param {any} event
  */
-async function callBlazorOnCounter(event: Office.AddinCommands.Event): Promise<void> {
+async function callBlazorServer(event: Office.AddinCommands.Event): Promise<void> {
   try {
-
-    console.log("Running callBlazorOnCounter");
-    await callStaticLocalComponentMethodinit("SayHelloCounter");
-
+    console.log("Running callBlazorServer");
+    await callDotNetMethod("server", "SayHelloCounter");
   } catch (error) {
-
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error("Error in callBlazorOnCounter:", errorMessage);
-
+    console.error("Error in callBlazorServer:", errorMessage);
   } finally {
-
-    console.log("Finish callBlazorOnCounter");
+    console.log("Finish callBlazorServer");
   }
 
   // Calling event.completed is required. event.completed lets the platform know that processing has completed.
@@ -104,35 +94,36 @@ async function callBlazorOnCounter(event: Office.AddinCommands.Event): Promise<v
 }
 
 /**
- * Checks if the .NET runtime is loaded and invokes a .NET method to retrieve a string.
- * The string is then inserted into a PowerPoint slide as a text box.
- * and some format is added to the text box.
- * 
- * @param {string} methodname - The name of the .NET method to invoke.
+ * Invokes a .NET method on the named DotNetObjectReference and inserts the result
+ * into a PowerPoint slide as a text box.
+ *
+ * @param {string} bridgeName - The bridge name ("wasm" or "server") to look up in dotNetRefs.
+ * @param {string} methodName - The name of the [JSInvokable] method to invoke on the handler.
  */
-async function callStaticLocalComponentMethodinit(methodname: string): Promise<void> {
+async function callDotNetMethod(bridgeName: string, methodName: string): Promise<void> {
 
-  console.log("In callStaticLocalComponentMethodinit");
+  const t0 = performance.now();
+  console.log(`In callDotNetMethod: bridge=${bridgeName}, method=${methodName}`);
 
   try {
     let name = "Initializing";
 
     try {
-      const dotnetloaded = await preloadDotNet();
-
-      name = "something";
+      const dotnetloaded = await preloadDotNet(bridgeName);
 
       if (dotnetloaded === true) {
+        const dotNetRef = window.dotNetRefs.get(bridgeName);
 
-        name = "Dotnet Loaded";
-        // Call JSInvokable Function here ...
-        name = await DotNet.invokeMethodAsync(
-          "Blazor.PowerPoint.AddIn.Client",
-          methodname,
-          "Blazor Fan"
-        );
+        if (!dotNetRef) {
+          name = `Bridge '${bridgeName}' not found in dotNetRefs`;
+          console.error(name);
+        } else {
+          name = "Dotnet Loaded";
+          // Call [JSInvokable] instance method on the DotNetObjectReference
+          name = await dotNetRef.invokeMethodAsync<string>(methodName, "Blazor Fan");
+        }
       } else {
-        name = "Init DotNet Failed, methodname: " + methodname;
+        name = "Init DotNet Failed, methodName: " + methodName;
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
@@ -140,6 +131,7 @@ async function callStaticLocalComponentMethodinit(methodname: string): Promise<v
       console.error("Error during DotNet invocation: " + name);
     }
 
+    console.log(`callDotNetMethod: .NET call took ${(performance.now() - t0).toFixed(1)}ms, starting PowerPoint.run`);
     await PowerPoint.run(async (context) => {
 
       const slide = context.presentation.getSelectedSlides().getItemAt(0);
@@ -162,42 +154,46 @@ async function callStaticLocalComponentMethodinit(methodname: string): Promise<v
       await context.sync();
     });
 
-    console.log("Finished Initializing: " + name)
+    console.log("Finished: " + name)
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error("Error in callStaticLocalComponentMethodinit:", errorMessage);
+    console.error("Error in callDotNetMethod:", errorMessage);
   } finally {
-    console.log("Finish callStaticLocalComponentMethodinit");
+    console.log("Finish callDotNetMethod");
   }
 }
 
 /**
- * Waits for the .NET runtime to be ready.
- * 
- * Uses a promise-based approach where the Blazor module signals readiness
- * via afterWebAssemblyStarted, eliminating the need for polling.
- * 
- * @param timeoutMs - Maximum time to wait for .NET to be ready (default: 10000ms)
- * @returns {Promise<boolean>} Returns true if the .NET runtime is ready, false if timeout.
+ * Waits for a specific .NET bridge component to be ready.
+ *
+ * Each bridge (wasm, server) has its own promise that resolves when
+ * that bridge's component signals readiness via signalDotNetReady(name, dotNetRef).
+ *
+ * @param bridgeName - The bridge to wait for ("wasm" or "server")
+ * @param timeoutMs - Maximum time to wait for the bridge to be ready (default: 10000ms)
+ * @returns {Promise<boolean>} Returns true if the bridge is ready, false if timeout.
  */
-async function preloadDotNet(timeoutMs: number = 10000): Promise<boolean> {
-  console.log("In preloadDotNet");
+async function preloadDotNet(bridgeName: string, timeoutMs: number = 10000): Promise<boolean> {
+  console.log(`In preloadDotNet: waiting for ${bridgeName} bridge`);
 
   try {
-    const dotNetReadyPromise = (window as any).dotNetReady;
+    const bridgePromise = window.dotNetReady?.[bridgeName];
 
-    if (!dotNetReadyPromise) {
-      console.error("dotNetReady promise not found - Blazor module may not be loaded");
+    if (!bridgePromise) {
+      console.error(`dotNetReady.${bridgeName} promise not found - Blazor module may not be loaded`);
       return false;
     }
 
-    // Race between the ready promise and a timeout
-    const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error("Timeout waiting for .NET runtime")), timeoutMs)
-    );
-
-    await Promise.race([dotNetReadyPromise, timeoutPromise]);
-    console.log(".NET runtime is ready");
+    // Race between the bridge ready promise and a timeout
+    await Promise.race([
+      bridgePromise,
+      new Promise<never>((_, reject) => {
+        AbortSignal.timeout(timeoutMs).addEventListener("abort", () =>
+          reject(new Error(`Timeout waiting for ${bridgeName} bridge`))
+        );
+      }),
+    ]);
+    console.log(`${bridgeName} bridge is ready`);
     return true;
 
   } catch (error: unknown) {
@@ -212,5 +208,5 @@ async function preloadDotNet(timeoutMs: number = 10000): Promise<boolean> {
 
 // Associate the functions with their named counterparts in the manifest XML.
 Office.actions.associate("insertTextInPowerPoint", insertTextInPowerPoint);
-Office.actions.associate("callBlazorOnHome", callBlazorOnHome);
-Office.actions.associate("callBlazorOnCounter", callBlazorOnCounter);
+Office.actions.associate("callBlazorWasm", callBlazorWasm);
+Office.actions.associate("callBlazorServer", callBlazorServer);

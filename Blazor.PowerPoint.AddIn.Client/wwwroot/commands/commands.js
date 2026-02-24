@@ -44,14 +44,14 @@ async function insertTextInPowerPoint(event) {
     }
 }
 /**
- * Writes the text from the Home Blazor Page to the PowerPoint slide
+ * Writes the text from the Home Blazor Page to the PowerPoint slide.
+ * Uses the "wasm" DotNetObjectReference (ClientCommandHandler) via WasmBridge.
  * @param {any} event
  */
 async function callBlazorOnHome(event) {
-    // Implement your custom code here. The following code is a simple PowerPoint example.  
     try {
         console.log("Running callBlazorOnHome");
-        await callStaticLocalComponentMethodinit("SayHelloHome");
+        await callDotNetMethod("wasm", "SayHelloHome");
     }
     catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
@@ -66,13 +66,14 @@ async function callBlazorOnHome(event) {
     }
 }
 /**
- * Writes the text from the Counter Blazor Page to the PowerPoint slide
+ * Writes the text from the Counter Blazor Page to the PowerPoint slide.
+ * Uses the "server" DotNetObjectReference (ServerCommandHandler) via ServerBridge.
  * @param {any} event
  */
 async function callBlazorOnCounter(event) {
     try {
         console.log("Running callBlazorOnCounter");
-        await callStaticLocalComponentMethodinit("SayHelloCounter");
+        await callDotNetMethod("server", "SayHelloCounter");
     }
     catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
@@ -87,26 +88,32 @@ async function callBlazorOnCounter(event) {
     }
 }
 /**
- * Checks if the .NET runtime is loaded and invokes a .NET method to retrieve a string.
- * The string is then inserted into a PowerPoint slide as a text box.
- * and some format is added to the text box.
+ * Invokes a .NET method on the named DotNetObjectReference and inserts the result
+ * into a PowerPoint slide as a text box.
  *
- * @param {string} methodname - The name of the .NET method to invoke.
+ * @param {string} bridgeName - The bridge name ("wasm" or "server") to look up in dotNetRefs.
+ * @param {string} methodName - The name of the [JSInvokable] method to invoke on the handler.
  */
-async function callStaticLocalComponentMethodinit(methodname) {
-    console.log("In callStaticLocalComponentMethodinit");
+async function callDotNetMethod(bridgeName, methodName) {
+    console.log(`In callDotNetMethod: bridge=${bridgeName}, method=${methodName}`);
     try {
         let name = "Initializing";
         try {
-            const dotnetloaded = await preloadDotNet();
-            name = "something";
+            const dotnetloaded = await preloadDotNet(bridgeName);
             if (dotnetloaded === true) {
-                name = "Dotnet Loaded";
-                // Call JSInvokable Function here ...
-                name = await DotNet.invokeMethodAsync("Blazor.PowerPoint.AddIn.Client", methodname, "Blazor Fan");
+                const dotNetRef = window.dotNetRefs.get(bridgeName);
+                if (!dotNetRef) {
+                    name = `Bridge '${bridgeName}' not found in dotNetRefs`;
+                    console.error(name);
+                }
+                else {
+                    name = "Dotnet Loaded";
+                    // Call [JSInvokable] instance method on the DotNetObjectReference
+                    name = await dotNetRef.invokeMethodAsync(methodName, "Blazor Fan");
+                }
             }
             else {
-                name = "Init DotNet Failed, methodname: " + methodname;
+                name = "Init DotNet Failed, methodName: " + methodName;
             }
         }
         catch (error) {
@@ -130,37 +137,42 @@ async function callStaticLocalComponentMethodinit(methodname) {
             textBox.textFrame.textRange.paragraphFormat.horizontalAlignment = PowerPoint.ParagraphHorizontalAlignment.center;
             await context.sync();
         });
-        console.log("Finished Initializing: " + name);
+        console.log("Finished: " + name);
     }
     catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        console.error("Error in callStaticLocalComponentMethodinit:", errorMessage);
+        console.error("Error in callDotNetMethod:", errorMessage);
     }
     finally {
-        console.log("Finish callStaticLocalComponentMethodinit");
+        console.log("Finish callDotNetMethod");
     }
 }
 /**
- * Waits for the .NET runtime to be ready.
+ * Waits for a specific .NET bridge component to be ready.
  *
- * Uses a promise-based approach where the Blazor module signals readiness
- * via afterWebAssemblyStarted, eliminating the need for polling.
+ * Each bridge (wasm, server) has its own promise that resolves when
+ * that bridge's component signals readiness via signalDotNetReady(name, dotNetRef).
  *
- * @param timeoutMs - Maximum time to wait for .NET to be ready (default: 10000ms)
- * @returns {Promise<boolean>} Returns true if the .NET runtime is ready, false if timeout.
+ * @param bridgeName - The bridge to wait for ("wasm" or "server")
+ * @param timeoutMs - Maximum time to wait for the bridge to be ready (default: 10000ms)
+ * @returns {Promise<boolean>} Returns true if the bridge is ready, false if timeout.
  */
-async function preloadDotNet(timeoutMs = 10000) {
-    console.log("In preloadDotNet");
+async function preloadDotNet(bridgeName, timeoutMs = 10000) {
+    console.log(`In preloadDotNet: waiting for ${bridgeName} bridge`);
     try {
-        const dotNetReadyPromise = window.dotNetReady;
-        if (!dotNetReadyPromise) {
-            console.error("dotNetReady promise not found - Blazor module may not be loaded");
+        const bridgePromise = window.dotNetReady?.[bridgeName];
+        if (!bridgePromise) {
+            console.error(`dotNetReady.${bridgeName} promise not found - Blazor module may not be loaded`);
             return false;
         }
-        // Race between the ready promise and a timeout
-        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout waiting for .NET runtime")), timeoutMs));
-        await Promise.race([dotNetReadyPromise, timeoutPromise]);
-        console.log(".NET runtime is ready");
+        // Race between the bridge ready promise and a timeout
+        await Promise.race([
+            bridgePromise,
+            new Promise((_, reject) => {
+                AbortSignal.timeout(timeoutMs).addEventListener("abort", () => reject(new Error(`Timeout waiting for ${bridgeName} bridge`)));
+            }),
+        ]);
+        console.log(`${bridgeName} bridge is ready`);
         return true;
     }
     catch (error) {
