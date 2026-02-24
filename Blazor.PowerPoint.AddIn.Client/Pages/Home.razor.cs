@@ -40,10 +40,4 @@ public partial class Home : ComponentBase
     private async Task CreateSlide() =>
         await JSModule.InvokeVoidAsync("createSlide");
 
-
-    [JSInvokable]
-    public static Task<string> SayHelloHome(string name)
-    {
-        return Task.FromResult($"Hello Home, {name} from the InteractiveWebAssembly Home Page!");
-    }
 }
