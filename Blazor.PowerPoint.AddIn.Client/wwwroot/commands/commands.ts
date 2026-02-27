@@ -1,4 +1,7 @@
-﻿/*
+﻿
+
+
+/*
  * Copyright (c) Maarten van Stam. All rights reserved. Licensed under the MIT license.
  * See LICENSE in the project root for license information.
  */
@@ -15,28 +18,8 @@ async function insertTextInPowerPoint(event: Office.AddinCommands.Event): Promis
   console.log("In insertTextInPowerPoint");
 
   try {
-    await PowerPoint.run(async (context) => {
-
-      const slide = context.presentation.getSelectedSlides().getItemAt(0);
-      const textBox = slide.shapes.addTextBox("Hello World",
-        {
-          left: 255,
-          top: 25,
-          height: 50,
-          width: 250
-        });
-
-      textBox.fill.setSolidColor("white");
-      textBox.lineFormat.color = "black";
-      textBox.lineFormat.weight = 1;
-      textBox.lineFormat.dashStyle = PowerPoint.ShapeLineDashStyle.solid;
-
-      // Align text in the middle of the text box
-      textBox.textFrame.textRange.paragraphFormat.horizontalAlignment = PowerPoint.ParagraphHorizontalAlignment.center;
-
-      await context.sync();
-    });
-  } catch (error) {
+    await insertSlideText("Hello World", { top: 25, width: 250 });  
+    } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("Error in insertTextInPowerPoint:", errorMessage);
   } finally {
@@ -57,7 +40,7 @@ async function insertTextInPowerPoint(event: Office.AddinCommands.Event): Promis
 async function callBlazorWasm(event: Office.AddinCommands.Event) {
   try {
     console.log("Running callBlazorWasm");
-    await callDotNetMethod("wasm", "SayHelloHome");
+    await callDotNetMethod("wasm", "SayHelloWASM");
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("Error in callBlazorWasm:", errorMessage);
@@ -79,12 +62,36 @@ async function callBlazorWasm(event: Office.AddinCommands.Event) {
 async function callBlazorServer(event: Office.AddinCommands.Event): Promise<void> {
   try {
     console.log("Running callBlazorServer");
-    await callDotNetMethod("server", "SayHelloCounter");
+    await callDotNetMethod("server", "SayHelloServer");
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("Error in callBlazorServer:", errorMessage);
   } finally {
     console.log("Finish callBlazorServer");
+  }
+
+  // Calling event.completed is required. event.completed lets the platform know that processing has completed.
+  if (event && typeof event.completed === 'function') {
+    event.completed();
+  }
+}
+
+/**
+ * Writes the text from the Home Blazor Page to the PowerPoint slide.
+ * Uses the "wasm" bridge to call ClientCommandHandler.SayHelloHome,
+ * which delegates to the static Home.SayHelloHome method that uses JSImport
+ * to call into the collocated Home.razor.js module.
+ * @param {any} event
+ */
+async function callBlazorHome(event: Office.AddinCommands.Event): Promise<void> {
+  try {
+    console.log("Running callBlazorHome");
+    await callDotNetMethod("wasm", "SayHelloHome");
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("Error in callBlazorHome:", errorMessage);
+  } finally {
+    console.log("Finish callBlazorHome");
   }
 
   // Calling event.completed is required. event.completed lets the platform know that processing has completed.
@@ -132,28 +139,7 @@ async function callDotNetMethod(bridgeName: string, methodName: string): Promise
     }
 
     console.log(`callDotNetMethod: .NET call took ${(performance.now() - t0).toFixed(1)}ms, starting PowerPoint.run`);
-    await PowerPoint.run(async (context) => {
-
-      const slide = context.presentation.getSelectedSlides().getItemAt(0);
-      const textBox = slide.shapes.addTextBox(name,
-        {
-          left: 255,
-          top: 50,
-          height: 50,
-          width: 450
-        });
-
-      textBox.fill.setSolidColor("white");
-      textBox.lineFormat.color = "black";
-      textBox.lineFormat.weight = 1;
-      textBox.lineFormat.dashStyle = PowerPoint.ShapeLineDashStyle.solid;
-
-      // Align text in the middle of the text box
-      textBox.textFrame.textRange.paragraphFormat.horizontalAlignment = PowerPoint.ParagraphHorizontalAlignment.center;
-
-      await context.sync();
-    });
-
+    await insertSlideText(name);
     console.log("Finished: " + name)
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -161,6 +147,34 @@ async function callDotNetMethod(bridgeName: string, methodName: string): Promise
   } finally {
     console.log("Finish callDotNetMethod");
   }
+}
+
+/**
+ * Inserts text into a text box on the currently selected PowerPoint slide.
+ * 
+ * @param text - The text to insert into the slide
+ * @param options - Optional positioning options for the text box
+ */
+async function insertSlideText(
+  text: string,
+  options?: { left?: number; top?: number; height?: number; width?: number }
+): Promise<void> {
+  const { left = 255, top = 50, height = 50, width = 450 } = options ?? {};
+
+  await PowerPoint.run(async (context) => {
+    const slide = context.presentation.getSelectedSlides().getItemAt(0);
+    const textBox = slide.shapes.addTextBox(text, { left, top, height, width });
+
+    textBox.fill.setSolidColor("white");
+    textBox.lineFormat.color = "black";
+    textBox.lineFormat.weight = 1;
+    textBox.lineFormat.dashStyle = PowerPoint.ShapeLineDashStyle.solid;
+
+    textBox.textFrame.textRange.paragraphFormat.horizontalAlignment =
+      PowerPoint.ParagraphHorizontalAlignment.center;
+
+    await context.sync();
+  });
 }
 
 /**
@@ -210,3 +224,4 @@ async function preloadDotNet(bridgeName: string, timeoutMs: number = 10000): Pro
 Office.actions.associate("insertTextInPowerPoint", insertTextInPowerPoint);
 Office.actions.associate("callBlazorWasm", callBlazorWasm);
 Office.actions.associate("callBlazorServer", callBlazorServer);
+Office.actions.associate("callBlazorHome", callBlazorHome);

@@ -295,6 +295,26 @@
 										<FunctionName>callBlazorWasm</FunctionName>
 									</Action>
 								</Control>
+
+								<Control xsi:type="Button" id="Contoso.FunctionButton5">
+									<Label resid="Contoso.FunctionButton5.Label" />
+									<Supertip>
+										<!-- ToolTip title. resid must point to a ShortString resource. -->
+										<Title resid="Contoso.FunctionButton5.Label" />
+										<!-- ToolTip description. resid must point to a LongString resource. -->
+										<Description resid="Contoso.FunctionButton5.Tooltip" />
+									</Supertip>
+									<Icon>
+										<bt:Image size="16" resid="home_16_regular" />
+										<bt:Image size="32" resid="home_32_regular" />
+										<bt:Image size="80" resid="home_80_regular" />
+									</Icon>
+
+									<!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+									<Action xsi:type="ExecuteFunction">
+										<FunctionName>callBlazorHome</FunctionName>
+									</Action>
+								</Control>
 							</Group>
 							<Label resid="Contoso.CustomTabLabel"/>
 						</CustomTab>
@@ -375,6 +395,7 @@
 				<bt:String id="Contoso.FunctionButton2.Label" DefaultValue="To Do" />
 				<bt:String id="Contoso.FunctionButton3.Label" DefaultValue="Insert text from Server" />
 				<bt:String id="Contoso.FunctionButton4.Label" DefaultValue="Insert text from WASM" />
+				<bt:String id="Contoso.FunctionButton5.Label" DefaultValue="Insert text from Home" />
 			</bt:ShortStrings>
 
 			<!-- LongStrings max characters==250. -->
@@ -389,6 +410,7 @@
 				<bt:String id="Contoso.FunctionButton3.Tooltip" DefaultValue="Click to do something" />
 				<bt:String id="Contoso.FunctionButton2.Tooltip" DefaultValue="Click to insert name from Counter" />
 				<bt:String id="Contoso.FunctionButton4.Tooltip" DefaultValue="Click to insert name from Home" />
+				<bt:String id="Contoso.FunctionButton5.Tooltip" DefaultValue="Click to insert text with render mode from Home" />
 
 				<bt:String id="Contoso.GetStarted.Description" DefaultValue="Your sample add-in loaded successfully. Go to the Sample Add-in tab and click the 'Show Taskpane' button to get started." />
 			</bt:LongStrings>

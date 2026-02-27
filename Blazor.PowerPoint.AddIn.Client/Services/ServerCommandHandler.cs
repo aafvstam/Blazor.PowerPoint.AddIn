@@ -10,9 +10,9 @@ namespace Blazor.PowerPoint.AddIn.Client.Services;
 public class ServerCommandHandler
 {
     [JSInvokable]
-    public Task<string> SayHelloCounter(string name)
+    public Task<string> SayHelloServer(string name)
     {
-        Console.WriteLine($"Invoking SayHelloCounter {name}");
-        return Task.FromResult($"Hello Counter, {name} from the InteractiveServer Counter Page!");
+        Console.WriteLine($"Invoking SayHelloServer {name}");
+        return Task.FromResult($"Hello Server, {name} from the InteractiveServer ServerCommandHandler!");
     }
 }
