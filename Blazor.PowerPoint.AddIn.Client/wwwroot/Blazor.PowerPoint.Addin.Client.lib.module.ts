@@ -1,20 +1,10 @@
 ﻿
 /* Copyright(c) Maarten van Stam. All rights reserved. Licensed under the MIT License. */
 
-// Promise that resolves when .NET runtime AND Client assembly are ready
-let resolveDotNetReady: () => void;
-const dotNetReadyPromise = new Promise<void>((resolve) => {
-  resolveDotNetReady = resolve;
-});
-
-// Expose to window for commands.ts to await
-(window as any).dotNetReady = dotNetReadyPromise;
-
-// Function called by WasmPreloader component when WebAssembly runtime and assembly are ready
-(window as any).signalDotNetReady = () => {
-  console.log("signalDotNetReady: WebAssembly runtime and Client assembly are now ready");
-  resolveDotNetReady();
-};
+// NOTE: window.signalDotNetReady, window.dotNetReady, and window.dotNetRefs
+// are defined in an inline <script> in App.razor so they are available before
+// blazor.web.js loads. This ensures both the Server and WebAssembly interactive
+// runtimes can call signalDotNetReady when their bridge components render.
 
 /**
  * JavaScript Initializers
@@ -134,8 +124,8 @@ export async function afterServerStarted(blazor: any) {
 export async function afterWebAssemblyStarted(blazor: any) {
   console.log("We are now entering function: afterWebAssemblyStarted");
 
-  // Note: The actual readiness signal is sent by the WasmPreloader component
-  // after it renders, ensuring the Client assembly is fully loaded and scanned
-  // for JSInvokable methods before commands.ts tries to invoke them.
-  console.log("WebAssembly runtime started - waiting for WasmPreloader component to signal readiness");
+  // Note: The actual readiness signals are sent by the WasmBridge and ServerBridge
+  // components after they render, each registering their DotNetObjectReference
+  // via signalDotNetReady(name, dotNetRef).
+  console.log("WebAssembly runtime started - waiting for bridge components to signal readiness");
 }

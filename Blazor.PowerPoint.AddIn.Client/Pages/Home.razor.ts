@@ -5,6 +5,16 @@
  */
 console.log("Loading Home.razor.ts");
 
+/**
+ * Function called from C# via JSImport to generate a greeting.
+ * @param name The name to greet.
+ * @returns A greeting string.
+ */
+export function sayHelloFromJs(name: string): string {
+    console.log(`sayHelloFromJs called with name: ${name}`);
+    return `Hello Home, ${name}`;
+}
+
 export async function createSlide() {
 
     console.log("We are now entering function: createSlide");
