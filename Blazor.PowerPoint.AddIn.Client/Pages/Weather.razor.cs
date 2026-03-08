@@ -54,10 +54,26 @@ public partial class Weather : ComponentBase
         await GetWeatherData();
 
     /// <summary>
-    /// Function to create a new slide in the PowerPoint presentation.
+    /// Function to create a new slide in the PowerPoint presentation with weather data table.
     /// </summary>
-    private async Task CreateSlideButton() =>
-        await JSModule.InvokeVoidAsync("createWeatherSlide");
+    private async Task CreateSlideButton()
+    {
+        if (forecasts is null || forecasts.Length == 0)
+        {
+            return;
+        }
+
+        // Convert forecasts to a format suitable for PowerPoint table
+        var tableData = forecasts.Select(f => new
+        {
+            Date = f.Date.ToString("yyyy-MM-dd"),
+            TempC = f.TemperatureC.ToString(),
+            TempF = f.TemperatureF.ToString(),
+            Summary = f.Summary ?? ""
+        }).ToArray();
+
+        await JSModule.InvokeVoidAsync("createWeatherSlide", (object)tableData);
+    }
 
     private async Task GetWeatherData()
     {

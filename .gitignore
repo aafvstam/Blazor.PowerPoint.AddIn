@@ -3,9 +3,13 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
-# Blazor TS Generated JS Files
-**/pages/*.js
+# TypeScript Generated JS and Source Map Files
+**/Pages/*.js
+**/Pages/*.js.map
+**/wwwroot/commands/*.js
+**/wwwroot/commands/*.js.map
 **/wwwroot/*.module.js
+**/wwwroot/*.module.js.map
 
 # dotenv files
 .env

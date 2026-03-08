@@ -220,6 +220,49 @@ async function preloadDotNet(bridgeName: string, timeoutMs: number = 10000): Pro
   }
 }
 
+/**
+ * Navigates PowerPoint to the last slide in the presentation.
+ */
+function goToLastSlide(): void {
+  Office.context.document.goToByIdAsync(Office.Index.Last, Office.GoToType.Index, (asyncResult) => {
+    if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+      console.error("Error navigating to last slide: ", asyncResult.error.message);
+    }
+  });
+}
+
+/**
+ * Inserts a base64-encoded image into the currently selected slide.
+ *
+ * @param base64Image - The base64-encoded image data to insert
+ */
+function insertImage(base64Image: string): void {
+  Office.context.document.setSelectedDataAsync(
+    base64Image,
+    { coercionType: Office.CoercionType.Image },
+    (asyncResult) => {
+      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+        console.error("Error inserting image: ", asyncResult.error.message);
+      }
+    }
+  );
+}
+
+/**
+ * Removes all default placeholder shapes from a slide to create a blank canvas.
+ *
+ * @param shapes - The shape collection of the target slide
+ */
+async function removeSlidePlaceholders(shapes: PowerPoint.ShapeCollection): Promise<void> {
+  shapes.load("items");
+  await shapes.context.sync();
+
+  for (let i = shapes.items.length - 1; i >= 0; i--) {
+    shapes.items[i]!.delete();
+  }
+  await shapes.context.sync();
+}
+
 // Associate the functions with their named counterparts in the manifest XML.
 Office.actions.associate("insertTextInPowerPoint", insertTextInPowerPoint);
 Office.actions.associate("callBlazorWasm", callBlazorWasm);

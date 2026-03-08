@@ -9,6 +9,8 @@
     <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
     <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Suppress CA1416: this is a Blazor WebAssembly project that runs exclusively in the browser -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

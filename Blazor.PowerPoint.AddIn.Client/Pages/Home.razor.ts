@@ -39,6 +39,10 @@ export async function createSlide() {
             const newSlide = slides.getItemAt(slides.items.length - 1)
 
             const shapes: PowerPoint.ShapeCollection = newSlide.shapes;
+
+            // Remove default placeholder shapes to get a blank slide
+            await removeSlidePlaceholders(shapes);
+
             var textbox: PowerPoint.Shape = shapes.addTextBox("Hello World!",
                 {
                     left: 255,
@@ -71,29 +75,5 @@ export async function createSlide() {
         });
     } catch (error) {
         console.error("Error creating welcome slide: ", error);
-    }
-
-    function insertImage(base64Image: string) {
-
-        // Call Office.js to insert the image into the document.
-        Office.context.document.setSelectedDataAsync(
-            base64Image,
-            {
-                coercionType: Office.CoercionType.Image
-            },
-            (asyncResult) => {
-                if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-                    console.error("Error creating welcome slide: ", asyncResult.error.message);
-                }
-            }
-        );
-    }
-
-    function goToLastSlide() {
-        Office.context.document.goToByIdAsync(Office.Index.Last, Office.GoToType.Index, (asyncResult) => {
-            if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-                console.error("Error creating welcome slide: ", asyncResult.error.message);
-            }
-        });
     }
 }

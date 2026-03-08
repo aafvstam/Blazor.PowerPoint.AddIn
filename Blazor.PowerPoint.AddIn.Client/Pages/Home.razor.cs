@@ -79,9 +79,17 @@ public partial class Home : ComponentBase
         var result = SayHelloFromJsFunction(name);
 
         // Use cached render mode if available, otherwise fall back to OperatingSystem check
-        var renderMode = _cachedRenderMode 
+        var renderMode = _cachedRenderMode
             ?? (OperatingSystem.IsBrowser() ? "InteractiveWebAssembly" : "Unknown");
 
         return $"{result} from the {renderMode} Home Page!";
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (JSModule is not null)
+        {
+            await JSModule.DisposeAsync();
+        }
     }
 }
