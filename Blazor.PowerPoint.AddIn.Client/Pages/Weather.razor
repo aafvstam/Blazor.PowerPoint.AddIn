@@ -1,11 +1,12 @@
 ﻿﻿@* Copyright (c) Maarten van Stam. All rights reserved. Licensed under the MIT License. *@
 
 @page "/weather"
-@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
-
+@rendermode InteractiveServer
 @attribute [StreamRendering]
 
 <PageTitle>Weather</PageTitle>
+
+<RenderModeInfo />
 
 <FluentStack Orientation="Orientation.Vertical">
 
@@ -39,7 +40,10 @@
                      HorizontalAlignment="HorizontalAlignment.Center"
                      VerticalAlignment="VerticalAlignment.Center">
             <FluentButton OnClick="RefreshButton" Disabled=@IsLoading Appearance="Appearance.Stealth">Refresh</FluentButton>
-            <FluentButton OnClick="CreateSlideButton" Disabled=@IsLoading Appearance="Appearance.Stealth">Create Slide</FluentButton>
+            @if (hostInformation.IsInitialized)
+            {
+                <FluentButton OnClick="CreateSlideButton" Disabled=@IsLoading Appearance="Appearance.Stealth">Create Slide</FluentButton>
+            }
         </FluentStack>
     </FluentToolbar>
 </FluentStack>

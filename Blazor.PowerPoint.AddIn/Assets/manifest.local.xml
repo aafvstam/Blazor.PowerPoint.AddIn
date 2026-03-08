@@ -160,7 +160,7 @@
 										<!-- ToolTip title. resid must point to a ShortString resource. -->
 										<Title resid="Contoso.Taskpane.Counter.Label" />
 										<!-- ToolTip description. resid must point to a LongString resource. -->
-										<Description resid="Contoso.Taskpane.Weather.Tooltip" />
+										<Description resid="Contoso.Taskpane.Counter.Tooltip" />
 									</Supertip>
 									<Icon>
 										<bt:Image size="16" resid="number_symbol_square_16" />
@@ -185,7 +185,7 @@
 									<Label resid="Contoso.Taskpane.Theme.Label" />
 									<Supertip>
 										<!-- ToolTip title. resid must point to a ShortString resource. -->
-										<Title resid="Contoso.Taskpane.Counter.Label" />
+										<Title resid="Contoso.Taskpane.Theme.Label" />
 										<!-- ToolTip description. resid must point to a LongString resource. -->
 										<Description resid="Contoso.Taskpane.Theme.Tooltip" />
 									</Supertip>
@@ -332,14 +332,10 @@
 
         <bt:Image id="home_16_regular" DefaultValue="https://localhost:7214/Images/ic_fluent_home_16_regular.png" />
         <bt:Image id="home_32_regular" DefaultValue="https://localhost:7214/Images/ic_fluent_home_32_regular.png" />
-        <bt:Image id="home_80_regular" DefaultValue="https://localhost:7214/Images/ic_fluent_home_80_regular.png" />
+				<bt:Image id="home_80_regular" DefaultValue="https://localhost:7214/Images/ic_fluent_home_80_regular.png" />
 
-        <bt:Image id="home_person_16_regular" DefaultValue="https://localhost:7214/Images/ic_fluent_home_person_16_regular.png" />
-        <bt:Image id="home_person_32_regular" DefaultValue="https://localhost:7214/Images/ic_fluent_home_person_32_regular.png" />
-        <bt:Image id="home_person_80_regular" DefaultValue="https://localhost:7214/Images/ic_fluent_home_person_80_regular.png" />
-
-        <bt:Image id="number_symbol_square_16" DefaultValue="https://localhost:7214/Images/ic_fluent_number_symbol_square_16_regular.png" />
-        <bt:Image id="number_symbol_square_32" DefaultValue="https://localhost:7214/Images/ic_fluent_number_symbol_square_32_regular.png" />
+				<bt:Image id="number_symbol_square_16" DefaultValue="https://localhost:7214/Images/ic_fluent_number_symbol_square_16_regular.png" />
+				<bt:Image id="number_symbol_square_32" DefaultValue="https://localhost:7214/Images/ic_fluent_number_symbol_square_32_regular.png" />
         <bt:Image id="number_symbol_square_80" DefaultValue="https://localhost:7214/Images/ic_fluent_number_symbol_square_80_regular.png" />
 
         <bt:Image id="weather_partly_cloudy_day_16" DefaultValue="https://localhost:7214/Images/ic_fluent_weather_partly_cloudy_day_16_regular.png" />
@@ -391,8 +387,6 @@
 				<bt:String id="Contoso.Taskpane.Theme.Label" DefaultValue="Theme" />
 
 				<bt:String id="Contoso.FunctionButton0.Label" DefaultValue="Insert Text" />
-				<bt:String id="Contoso.FunctionButton1.Label" DefaultValue="To Do" />
-				<bt:String id="Contoso.FunctionButton2.Label" DefaultValue="To Do" />
 				<bt:String id="Contoso.FunctionButton3.Label" DefaultValue="Insert text from Server" />
 				<bt:String id="Contoso.FunctionButton4.Label" DefaultValue="Insert text from WASM" />
 				<bt:String id="Contoso.FunctionButton5.Label" DefaultValue="Insert text from Home" />
@@ -406,9 +400,7 @@
 				<bt:String id="Contoso.Taskpane.Theme.Tooltip" DefaultValue="Click to Show Theme Taskpane" />
 
 				<bt:String id="Contoso.FunctionButton0.Tooltip" DefaultValue="Click to insert text in slide" />
-				<bt:String id="Contoso.FunctionButton1.Tooltip" DefaultValue="Click to do something" />
 				<bt:String id="Contoso.FunctionButton3.Tooltip" DefaultValue="Click to do something" />
-				<bt:String id="Contoso.FunctionButton2.Tooltip" DefaultValue="Click to insert name from Counter" />
 				<bt:String id="Contoso.FunctionButton4.Tooltip" DefaultValue="Click to insert name from Home" />
 				<bt:String id="Contoso.FunctionButton5.Tooltip" DefaultValue="Click to insert text with render mode from Home" />
 

@@ -5,7 +5,7 @@
  * Copyright (c) Maarten van Stam. All rights reserved. Licensed under the MIT license.
  * See LICENSE in the project root for license information.
  */
-console.log("Loading command.js");
+console.log("Loading commands.js");
 
 /**
  * Inserts "Hello World" box in the PowerPoint presentation.
@@ -37,7 +37,7 @@ async function insertTextInPowerPoint(event: Office.AddinCommands.Event): Promis
  * Uses the "wasm" DotNetObjectReference (ClientCommandHandler) via WasmBridge.
  * @param {any} event
  */
-async function callBlazorWasm(event: Office.AddinCommands.Event) {
+async function callBlazorWasm(event: Office.AddinCommands.Event): Promise<void> {
   try {
     console.log("Running callBlazorWasm");
     await callDotNetMethod("wasm", "SayHelloWASM");
@@ -223,11 +223,15 @@ async function preloadDotNet(bridgeName: string, timeoutMs: number = 10000): Pro
 /**
  * Navigates PowerPoint to the last slide in the presentation.
  */
-function goToLastSlide(): void {
-  Office.context.document.goToByIdAsync(Office.Index.Last, Office.GoToType.Index, (asyncResult) => {
-    if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-      console.error("Error navigating to last slide: ", asyncResult.error.message);
-    }
+async function goToLastSlide(): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    Office.context.document.goToByIdAsync(Office.Index.Last, Office.GoToType.Index, (asyncResult) => {
+      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+        reject(new Error(asyncResult.error.message));
+      } else {
+        resolve();
+      }
+    });
   });
 }
 
@@ -236,16 +240,20 @@ function goToLastSlide(): void {
  *
  * @param base64Image - The base64-encoded image data to insert
  */
-function insertImage(base64Image: string): void {
-  Office.context.document.setSelectedDataAsync(
-    base64Image,
-    { coercionType: Office.CoercionType.Image },
-    (asyncResult) => {
-      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-        console.error("Error inserting image: ", asyncResult.error.message);
+async function insertImage(base64Image: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    Office.context.document.setSelectedDataAsync(
+      base64Image,
+      { coercionType: Office.CoercionType.Image },
+      (asyncResult) => {
+        if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+          reject(new Error(asyncResult.error.message));
+        } else {
+          resolve();
+        }
       }
-    }
-  );
+    );
+  });
 }
 
 /**

@@ -32,9 +32,11 @@ else
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
 
+// Fallback for files not in the build-time manifest (e.g. TypeScript-compiled outputs)
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+// Serves fingerprinted/cached assets from the build-time static web assets manifest
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()

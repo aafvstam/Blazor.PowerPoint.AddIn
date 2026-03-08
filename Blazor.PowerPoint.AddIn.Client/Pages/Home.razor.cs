@@ -12,19 +12,9 @@ using Microsoft.JSInterop;
 namespace Blazor.PowerPoint.AddIn.Client.Pages;
 
 [SupportedOSPlatform("browser")]
-public partial class Home : ComponentBase
+public partial class Home : ComponentBase, IAsyncDisposable
 {
-    private HostInformation hostInformation = new HostInformation();
-
-    // Static field to cache the render mode when the component is rendered
-    private static string? _cachedRenderMode;
-
-    /// <summary>
-    /// Gets the current render mode name based on the component's RendererInfo.
-    /// </summary>
-    private string CurrentRenderMode => RendererInfo.IsInteractive
-        ? $"Interactive{RendererInfo.Name}"
-        : "Static";
+    private HostInformation hostInformation = new();
 
     [Inject, AllowNull]
     private IJSRuntime JSRuntime { get; set; }
@@ -35,9 +25,6 @@ public partial class Home : ComponentBase
     {
         if (firstRender)
         {
-            // Cache the render mode for static method access
-            _cachedRenderMode = CurrentRenderMode;
-
             hostInformation = await JSRuntime.InvokeAsync<HostInformation>("Office.onReady");
 
             Debug.WriteLine("Hit OnAfterRenderAsync in Home.razor.cs!");
@@ -78,9 +65,7 @@ public partial class Home : ComponentBase
         // Call the JS function and get the result (synchronous call)
         var result = SayHelloFromJsFunction(name);
 
-        // Use cached render mode if available, otherwise fall back to OperatingSystem check
-        var renderMode = _cachedRenderMode
-            ?? (OperatingSystem.IsBrowser() ? "InteractiveWebAssembly" : "Unknown");
+        var renderMode = OperatingSystem.IsBrowser() ? "InteractiveWebAssembly" : "Unknown";
 
         return $"{result} from the {renderMode} Home Page!";
     }
@@ -89,7 +74,14 @@ public partial class Home : ComponentBase
     {
         if (JSModule is not null)
         {
-            await JSModule.DisposeAsync();
+            try
+            {
+                await JSModule.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Circuit is already gone; JS-side resources are already cleaned up.
+            }
         }
     }
 }
